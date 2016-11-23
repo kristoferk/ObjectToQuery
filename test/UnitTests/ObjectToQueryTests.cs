@@ -299,6 +299,14 @@ namespace UnitTests
         }
 
         [Fact]
+        public void TestInheritTest()
+        {
+            var query = new InheritTest().ToQuery(new ToQueryOptions());
+            string expectedQuery = "Page=1&PageSize=20&Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2";
+            Assert.Equal(expectedQuery, query);
+        }
+
+        [Fact]
         public void TestRemoveAll()
         {
             var testData = TestDataFactory.CreateTestObject();

@@ -15,6 +15,13 @@ namespace UnitTests.TestData
         public NestedObject NestedObject { get; set; } = new NestedObject();
     }
 
+    public class InheritTest : MyObject
+    {
+        public int Page { get; set; } = 1;
+
+        public int PageSize { get; set; } = 20;
+    }
+
     public class NestedObject
     {
         public int Id { get; set; } = 2;

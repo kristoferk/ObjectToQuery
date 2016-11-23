@@ -18,7 +18,7 @@ namespace ObjectToQuery.Internal
 
             if (!PropertyDictionary.TryGetValue(type, out properties))
             {
-                properties = type.GetTypeInfo().DeclaredProperties
+                properties = type.GetTypeInfo().GetProperties()
                     .Where(property => property.CanRead)
                     .ToList();
 

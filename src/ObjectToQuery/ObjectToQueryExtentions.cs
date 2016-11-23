@@ -5,7 +5,7 @@ namespace ObjectToQuery
 {
     public static class ObjectToQueryExtentions
     {
-        public static string AppendObject<T>(this string source, T obj) where T : class
+        public static string AppendObject<T>(this string source, T obj, ToQueryOptions options = null) where T : class
         {
             if (obj == null)
             {
@@ -13,7 +13,7 @@ namespace ObjectToQuery
             }
 
             string delimiter = source.IndexOf("?", StringComparison.Ordinal) >= 0 ? "&" : "?";
-            var query = obj.ToQuery();
+            var query = obj.ToQuery(options);
             return string.IsNullOrWhiteSpace(query) ? source : $"{source}{delimiter}{query}";
         }
 
