@@ -191,6 +191,14 @@ namespace UnitTests
         }
 
         [Fact]
+        public void TestInheritTest()
+        {
+            var query = new InheritTest().ToQuery(new ToQueryOptions());
+            string expectedQuery = "Page=1&PageSize=20&Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2";
+            Assert.Equal(expectedQuery, query);
+        }
+
+        [Fact]
         public void TestKeyCamelCase()
         {
             var testData = TestDataFactory.CreateTestObject();
@@ -277,32 +285,6 @@ namespace UnitTests
         {
             var query = new ListObject().ToQuery();
             string expectedQuery = "List=2&List=4&EmptyIntList=";
-            Assert.Equal(expectedQuery, query);
-        }
-
-        //[Fact]
-        //public void TestListObject2()
-        //{
-        //    var query = new ListObject().ToQuery(new ToQueryOptions {
-        //        KeyListStyle = KeyListStyle.Array
-        //    });
-        //    string expectedQuery = "List[]=2&List[]=4&EmptyIntList[]=";
-        //    Assert.Equal(expectedQuery, query);
-        //}
-
-        [Fact]
-        public void TestSpecialTypes()
-        {
-            var query = new SpecialTypeObject().ToQuery(new ToQueryOptions());
-            string expectedQuery = $"TimeSpan={new TimeSpan(0, 1, 1, 1, 2).TotalMilliseconds}&CultureInfo=en-US&Removed=false&Double=2%2C5&Dictionary.Key=a&Dictionary.Value=1&Dictionary.Key=b&Dictionary.Value=2&Guid=61fbde9f-b69b-4c37-ab6c-3212b02b8c0e";
-            Assert.Equal(expectedQuery, query);
-        }
-
-        [Fact]
-        public void TestInheritTest()
-        {
-            var query = new InheritTest().ToQuery(new ToQueryOptions());
-            string expectedQuery = "Page=1&PageSize=20&Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2";
             Assert.Equal(expectedQuery, query);
         }
 
@@ -590,6 +572,24 @@ namespace UnitTests
                 "&Tags=C&Tags=d" +
                 "&UserHeight=80%2C5";
 
+            Assert.Equal(expectedQuery, query);
+        }
+
+        //[Fact]
+        //public void TestListObject2()
+        //{
+        //    var query = new ListObject().ToQuery(new ToQueryOptions {
+        //        KeyListStyle = KeyListStyle.Array
+        //    });
+        //    string expectedQuery = "List[]=2&List[]=4&EmptyIntList[]=";
+        //    Assert.Equal(expectedQuery, query);
+        //}
+
+        [Fact]
+        public void TestSpecialTypes()
+        {
+            var query = new SpecialTypeObject().ToQuery(new ToQueryOptions());
+            string expectedQuery = $"TimeSpan={new TimeSpan(0, 1, 1, 1, 2).TotalMilliseconds}&CultureInfo=en-US&Removed=false&Double=2%2C5&Dictionary.Key=a&Dictionary.Value=1&Dictionary.Key=b&Dictionary.Value=2&Guid=61fbde9f-b69b-4c37-ab6c-3212b02b8c0e";
             Assert.Equal(expectedQuery, query);
         }
 

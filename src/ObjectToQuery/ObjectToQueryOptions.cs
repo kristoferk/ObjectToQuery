@@ -18,9 +18,9 @@ namespace ObjectToQuery
 
         public bool ReplaceSpaceWithPlus { get; set; }
 
-        //public KeyListStyle KeyListStyle { get; set; }
-
         //public ToQueryEvents Events { get; set; }
+
+        //public KeyListStyle KeyListStyle { get; set; }
     }
 
     public class ToQueryEvents
