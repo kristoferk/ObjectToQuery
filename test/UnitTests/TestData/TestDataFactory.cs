@@ -20,6 +20,15 @@ namespace UnitTests.TestData
         public int Id { get; set; } = 2;
     }
 
+    public class ListObject
+    {
+        public List<int> List { get; set; } = new List<int> { 2, 4 };
+
+        public List<int> EmptyIntList { get; set; } = new List<int>();
+
+        public List<string> EmptyStringList { get; set; } = new List<string>();
+    }
+
     public class CaseTestDataObject
     {
         public string Name { get; set; } = "Example";

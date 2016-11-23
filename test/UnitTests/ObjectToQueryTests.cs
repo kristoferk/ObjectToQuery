@@ -273,6 +273,24 @@ namespace UnitTests
         }
 
         [Fact]
+        public void TestListObject()
+        {
+            var query = new ListObject().ToQuery();
+            string expectedQuery = "List=2&List=4&EmptyIntList=";
+            Assert.Equal(expectedQuery, query);
+        }
+
+        //[Fact]
+        //public void TestListObject2()
+        //{
+        //    var query = new ListObject().ToQuery(new ToQueryOptions {
+        //        KeyListStyle = KeyListStyle.Array
+        //    });
+        //    string expectedQuery = "List[]=2&List[]=4&EmptyIntList[]=";
+        //    Assert.Equal(expectedQuery, query);
+        //}
+
+        [Fact]
         public void TestSpecialTypes()
         {
             var query = new SpecialTypeObject().ToQuery(new ToQueryOptions());

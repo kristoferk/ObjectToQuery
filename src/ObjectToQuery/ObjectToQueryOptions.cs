@@ -18,6 +18,8 @@ namespace ObjectToQuery
 
         public bool ReplaceSpaceWithPlus { get; set; }
 
+        //public KeyListStyle KeyListStyle { get; set; }
+
         //public ToQueryEvents Events { get; set; }
     }
 
@@ -38,6 +40,12 @@ namespace ObjectToQuery
     {
         None = 0,
         Ascending = 1
+    }
+
+    public enum KeyListStyle
+    {
+        Default = 0,
+        Array = 1
     }
 
     public enum ValueCase
