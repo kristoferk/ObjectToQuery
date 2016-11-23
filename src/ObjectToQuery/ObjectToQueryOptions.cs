@@ -1,4 +1,6 @@
-﻿namespace ObjectToQuery
+﻿using System;
+
+namespace ObjectToQuery
 {
     public class ToQueryOptions
     {
@@ -15,6 +17,13 @@
         public bool EnumAsString { get; set; }
 
         public bool ReplaceSpaceWithPlus { get; set; }
+
+        public ToQueryEvents Events { get; set; }
+    }
+
+    public class ToQueryEvents
+    {
+        public Action<string> FormatValue;
     }
 
     public enum KeyCase

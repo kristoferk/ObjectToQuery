@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace UnitTests.TestData
 {
@@ -11,6 +12,17 @@ namespace UnitTests.TestData
     public class TestEnumObject
     {
         public TestEnum TestEnum { get; set; } = TestEnum.Test;
+    }
+
+    public class SpecialTypeObject
+    {
+        public TimeSpan TimeSpan { get; set; } = new TimeSpan(0, 1, 1, 1, 2);
+
+        public CultureInfo CultureInfo { get; set; } = new CultureInfo("en-US");
+
+        public bool Removed { get; set; } = false;
+
+        public Guid Guid { get; set; } = Guid.Parse("61fbde9f-b69b-4c37-ab6c-3212b02b8c0e");
     }
 
     public class TestDataObject

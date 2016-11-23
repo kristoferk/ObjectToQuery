@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -147,6 +148,34 @@ namespace ObjectToQuery.Internal
             {
                 var enumValue = options.EnumAsString ? value.ToString() : Convert.ToInt32(value).ToString();
                 Add(stringValues, key, enumValue, options);
+                return true;
+            }
+
+            var valueAsTimeSpan = value as TimeSpan?;
+            if (valueAsTimeSpan.HasValue)
+            {
+                Add(stringValues, key, valueAsTimeSpan.Value.TotalMilliseconds.ToString(CultureInfo.InvariantCulture), options);
+                return true;
+            }
+
+            var valueAsCultureInfo = value as CultureInfo;
+            if (valueAsCultureInfo != null)
+            {
+                Add(stringValues, key, valueAsCultureInfo.Name, options);
+                return true;
+            }
+
+            var guidValue = value as Guid?;
+            if (guidValue.HasValue)
+            {
+                Add(stringValues, key, guidValue.Value.ToString(), options);
+                return true;
+            }
+
+            var boolValue = value as bool?;
+            if (boolValue.HasValue)
+            {
+                Add(stringValues, key, boolValue.Value.ToString().ToLowerInvariant(), options);
                 return true;
             }
 
