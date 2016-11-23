@@ -4,6 +4,22 @@ using System.Globalization;
 
 namespace UnitTests.TestData
 {
+    public class MyObject
+    {
+        public int Id { get; set; } = 1;
+
+        public string Name { get; set; } = "Example";
+
+        public List<string> Tags { get; set; } = new List<string> { "a", "b" };
+
+        public NestedObject NestedObject { get; set; } = new NestedObject();
+    }
+
+    public class NestedObject
+    {
+        public int Id { get; set; } = 2;
+    }
+
     public class CaseTestDataObject
     {
         public string Name { get; set; } = "Example";

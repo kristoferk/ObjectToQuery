@@ -1,5 +1,6 @@
 ﻿using ObjectToQuery;
 using System;
+using System.Collections.Generic;
 using UnitTests.TestData;
 using Xunit;
 
@@ -128,6 +129,65 @@ namespace UnitTests
             var query = obj.ToQuery();
             string expectedQuery = "TestEnum=1";
             Assert.Equal(expectedQuery, query);
+        }
+
+        [Fact]
+        public void TestExample()
+        {
+            var myObject = new MyObject {
+                Id = 1,
+                Name = "Example",
+                Tags = new List<string> { "a", "b" },
+                NestedObject = new NestedObject {
+                    Id = 2
+                }
+            };
+
+            string queryString = myObject.ToQuery();
+
+            //Result: Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2
+            string expectedQuery = "Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2";
+            Assert.Equal(expectedQuery, queryString);
+        }
+
+        [Fact]
+        public void TestExample2()
+        {
+            var myObject = new MyObject {
+                Id = 1,
+                Name = "Example",
+                Tags = new List<string> { "a", "b" },
+                NestedObject = new NestedObject {
+                    Id = 2
+                }
+            };
+
+            string queryString = myObject.ToQuery(new ToQueryOptions {
+                EnumAsString = true,
+                KeyCase = KeyCase.CamelCase,
+                RemoveValues = RemoveValues.NullDefaultOrEmpty,
+                SortKeys = true,
+                ValueCase = ValueCase.LowerCase,
+                SkipEncoding = false,
+                ReplaceSpaceWithPlus = false
+            });
+
+            //Result: id=1&name=example&nestedObject.id=2&tags=a&tags=b
+            string expectedQuery = "id=1&name=example&nestedObject.id=2&tags=a&tags=b";
+            Assert.Equal(expectedQuery, queryString);
+        }
+
+        [Fact]
+        public void TestExample3()
+        {
+            var myObject = new MyObject { Id = 1, Name = "Example" };
+
+            IObjectToQueryConverter objectToQueryConverter = new ObjectToQueryConverter();
+            string queryString = objectToQueryConverter.ToQuery(myObject);
+
+            //Result: Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2
+            string expectedQuery = "Id=1&Name=Example&Tags=a&Tags=b&NestedObject.Id=2";
+            Assert.Equal(expectedQuery, queryString);
         }
 
         [Fact]
