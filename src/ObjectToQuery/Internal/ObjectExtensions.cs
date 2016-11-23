@@ -13,19 +13,22 @@ namespace ObjectToQuery.Internal
         internal static IDictionary<string, object> GetCachedProperties<T>(this T obj)
             where T : class
         {
-            var type = obj?.GetType() ?? typeof(T);
+            var type =  obj?.GetType() ?? typeof(T);
+            IReadOnlyList<PropertyInfo> properties = GetPropertiesForType(type);
+            return properties.ToDictionary(property => property.Name, property => property.GetValue(obj));
+        }
+
+        internal static IReadOnlyList<PropertyInfo> GetPropertiesForType(this Type type)
+        {
             IReadOnlyList<PropertyInfo> properties;
 
             if (!PropertyDictionary.TryGetValue(type, out properties))
             {
-                properties = type.GetTypeInfo().GetProperties()
-                    .Where(property => property.CanRead)
-                    .ToList();
-
+                properties = type.GetTypeInfo().GetProperties().Where(property => property.CanRead).ToList();
                 PropertyDictionary.TryAdd(type, properties);
             }
 
-            return properties.ToDictionary(property => property.Name, property => property.GetValue(obj));
+            return properties;
         }
     }
 }

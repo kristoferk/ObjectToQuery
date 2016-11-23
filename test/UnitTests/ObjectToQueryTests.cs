@@ -1,6 +1,7 @@
 ﻿using ObjectToQuery;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnitTests.TestData;
 using Xunit;
 
@@ -596,6 +597,18 @@ namespace UnitTests
         [Fact]
         public void TestValueLowerCase()
         {
+            var query = new CaseTestDataObject().ToQuery(new ToQueryOptions {
+                ValueCase = ValueCase.LowerCase
+            });
+            string expectedQuery = "Name=example";
+            Assert.Equal(expectedQuery, query);
+        }
+
+        [Fact]
+        public async Task TestWarmUp()
+        {
+            await ObjectToQueryExtentions.WarmUpAsync(typeof(CaseTestDataObject));
+
             var query = new CaseTestDataObject().ToQuery(new ToQueryOptions {
                 ValueCase = ValueCase.LowerCase
             });
