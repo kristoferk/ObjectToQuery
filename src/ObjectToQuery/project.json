@@ -9,7 +9,7 @@
     "licenseUrl": "",
     "repository": {
       "type": "git",
-      "url": "git://github.com/kristoferk/ObjectToQuery"
+      "url": "git://github.com/kristoferk/ObjectToQuery.git"
     }
   },
   "dependencies": {
