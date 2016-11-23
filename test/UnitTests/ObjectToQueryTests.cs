@@ -294,7 +294,7 @@ namespace UnitTests
         public void TestSpecialTypes()
         {
             var query = new SpecialTypeObject().ToQuery(new ToQueryOptions());
-            string expectedQuery = $"TimeSpan={new TimeSpan(0, 1, 1, 1, 2).TotalMilliseconds}&CultureInfo=en-US&Removed=false&Guid=61fbde9f-b69b-4c37-ab6c-3212b02b8c0e";
+            string expectedQuery = $"TimeSpan={new TimeSpan(0, 1, 1, 1, 2).TotalMilliseconds}&CultureInfo=en-US&Removed=false&Double=2%2C5&Dictionary.Key=a&Dictionary.Value=1&Dictionary.Key=b&Dictionary.Value=2&Guid=61fbde9f-b69b-4c37-ab6c-3212b02b8c0e";
             Assert.Equal(expectedQuery, query);
         }
 

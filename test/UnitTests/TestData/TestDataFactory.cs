@@ -47,6 +47,13 @@ namespace UnitTests.TestData
 
         public bool Removed { get; set; } = false;
 
+        public double Double { get; set; } = 2.5;
+
+        public Dictionary<string, string> Dictionary { get; set; } = new Dictionary<string, string> {
+            { "a", "1" },
+            { "b", "2" }
+        };
+
         public Guid Guid { get; set; } = Guid.Parse("61fbde9f-b69b-4c37-ab6c-3212b02b8c0e");
     }
 
