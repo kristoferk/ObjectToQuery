@@ -12,8 +12,8 @@ namespace ObjectToQuery.Internal
         public static object GetDefaultValue(this Type type)
         {
             return type.GetTypeInfo().IsValueType
-               ? typeDefaults.GetOrAdd(type, Activator.CreateInstance)
-               : null;
+                ? typeDefaults.GetOrAdd(type, Activator.CreateInstance)
+                : null;
         }
     }
 }

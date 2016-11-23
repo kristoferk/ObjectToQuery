@@ -17,7 +17,7 @@ namespace ObjectToQuery
             return string.IsNullOrWhiteSpace(query) ? source : $"{source}{delimiter}{query}";
         }
 
-        public static string ToQuery<T>(this T filter, ToQueryOptions options=null) where T : class
+        public static string ToQuery<T>(this T filter, ToQueryOptions options = null) where T : class
         {
             return filter.ConvertToQuery(options);
         }

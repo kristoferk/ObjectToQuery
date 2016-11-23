@@ -104,7 +104,7 @@ namespace ObjectToQuery.Internal
 
             //Remove empty strings
             if ((options.RemoveValues == RemoveValues.NullOrEmpty ||
-                options.RemoveValues == RemoveValues.NullDefaultOrEmpty)
+                 options.RemoveValues == RemoveValues.NullDefaultOrEmpty)
                 && string.IsNullOrEmpty(value))
             {
                 return;

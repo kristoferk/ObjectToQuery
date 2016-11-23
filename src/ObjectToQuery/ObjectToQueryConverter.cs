@@ -14,7 +14,7 @@
             return source.AppendObject(obj);
         }
 
-        public string ToQuery<T>(T filter, ToQueryOptions options=null) where T : class
+        public string ToQuery<T>(T filter, ToQueryOptions options = null) where T : class
         {
             return filter.ToQuery(options);
         }

@@ -31,7 +31,7 @@ namespace UnitTests.TestData
 
         public List<string> Tags { get; set; } = new List<string> { "C", "d" };
 
-        public DateTimeOffset Birth { get; set; } = new DateTimeOffset(new DateTime(2018,1,1,0,0,0, DateTimeKind.Utc), TimeSpan.Zero);
+        public DateTimeOffset Birth { get; set; } = new DateTimeOffset(new DateTime(2018, 1, 1, 0, 0, 0, DateTimeKind.Utc), TimeSpan.Zero);
 
         public DateTimeOffset? Died { get; set; } = new DateTimeOffset(new DateTime(2030, 1, 1, 0, 0, 0, DateTimeKind.Utc), TimeSpan.Zero);
 
@@ -43,13 +43,18 @@ namespace UnitTests.TestData
 
         public DateTime? NextAnniversary { get; set; } = new DateTime(2018, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        public string[] Categories { get; set; } = {"a", "B"};
+        public string[] Categories { get; set; } = { "a", "B" };
 
         public TestDataProfile Profile { get; set; } = new TestDataProfile();
     }
 
     public class TestDataProfile
     {
+        public TestDataProfile()
+        {
+            Email = "firstname.lastname@company.com";
+        }
+
         public string Email { get; set; }
 
         public string Alias { get; set; } = "super man";
@@ -63,11 +68,6 @@ namespace UnitTests.TestData
         public string[] Categories { get; set; } = { "a", "B" };
 
         public DeepTestObject Sub { get; set; } = new DeepTestObject();
-
-        public TestDataProfile()
-        {
-            Email = "firstname.lastname@company.com";
-        }
     }
 
     public class DeepTestObject
