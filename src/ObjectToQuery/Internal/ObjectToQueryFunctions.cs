@@ -9,29 +9,33 @@ namespace ObjectToQuery.Internal
 {
     internal static class ObjectToQueryFunctions
     {
-        internal static string ConvertToQuery<T>(this T filter, ToQueryOptions options) where T : class
+        internal static string ConvertToQuery<T>(this T filter, BaseOptions options) where T : class
         {
             if (filter == null)
             {
                 return string.Empty;
             }
 
-            options = options ?? new ToQueryOptions();
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options), "Options must have value");
+            }
+
             List<string> stringValues = new List<string>();
 
-            IDictionary<string, object> properties = filter.GetCachedProperties();
+            List<PropertyKeyValue> properties = filter.GetCachedProperties();
             if (options.SortKeys)
             {
                 foreach (var property in properties.OrderBy(p => p.Key))
                 {
-                    BuildParams(stringValues, property.Key, property.Value, false, options);
+                    BuildParams(stringValues, property.Type, property.Key, property.Value, false, options);
                 }
             }
             else
             {
                 foreach (var property in properties)
                 {
-                    BuildParams(stringValues, property.Key, property.Value, false, options);
+                    BuildParams(stringValues, property.Type, property.Key, property.Value, false, options);
                 }
             }
 
@@ -44,7 +48,7 @@ namespace ObjectToQuery.Internal
             return result;
         }
 
-        internal static string FormatKey(string key, ToQueryOptions options)
+        internal static string FormatKey(string key, BaseOptions options)
         {
             key = ChangeCase(key, options.KeyCase);
 
@@ -76,7 +80,7 @@ namespace ObjectToQuery.Internal
             return key;
         }
 
-        internal static string FormatValue(string value, ToQueryOptions options)
+        internal static string FormatValue(string value, BaseOptions options)
         {
             if (!options.SkipEncoding)
             {
@@ -91,7 +95,7 @@ namespace ObjectToQuery.Internal
             return value;
         }
 
-        internal static void Add(List<string> stringValues, string key, string value, ToQueryOptions options)
+        internal static void Add(List<string> stringValues, string key, string value, BaseOptions options)
         {
             //Remove null values
             if (options.RemoveValues != RemoveValues.None && value == null)
@@ -110,7 +114,7 @@ namespace ObjectToQuery.Internal
             stringValues.Add($"{FormatKey(key, options)}={FormatValue(value ?? string.Empty, options)}");
         }
 
-        internal static bool AddPrimative(List<string> stringValues, string key, object value, bool isList, ToQueryOptions options)
+        internal static bool AddPrimative(List<string> stringValues, string key, object value, bool isList, BaseOptions options)
         {
             var valueAsDateTime = value as DateTime?;
             if (valueAsDateTime.HasValue)
@@ -185,7 +189,7 @@ namespace ObjectToQuery.Internal
             return false;
         }
 
-        internal static List<string> BuildParams(List<string> stringValues, string key, object value, bool isList, ToQueryOptions options)
+        internal static List<string> BuildParams(List<string> stringValues, Type valueType, string key, object value, bool isList, BaseOptions options)
         {
             //Handle primitive types
             if (AddPrimative(stringValues, key, value, isList, options))
@@ -202,10 +206,22 @@ namespace ObjectToQuery.Internal
                 {
                     foreach (var listOject in enumerable)
                     {
-                        BuildParams(stringValues, key, listOject, true, options);
+                        var args = valueType.GetTypeInfo().GenericTypeArguments.FirstOrDefault();
+                        BuildParams(stringValues, args, key, listOject, true, options);
                     }
                 }
 
+                return stringValues;
+            }
+
+            //Handle arrays and lists that has value null
+            if (valueType != null &&
+                typeof(IEnumerable).GetTypeInfo().IsAssignableFrom(valueType) &&
+                !typeof(string).GetTypeInfo().IsAssignableFrom(valueType) &&
+                value == null &&
+                options.ToCacheKey)
+            {
+                Add(stringValues, key, "Null", options);
                 return stringValues;
             }
 
@@ -220,7 +236,7 @@ namespace ObjectToQuery.Internal
                         foreach (var property in value.GetCachedProperties().OrderBy(p => p.Key))
                         {
                             string propValue = ChangeCase(property.Key, options.KeyCase);
-                            BuildParams(stringValues, key + "." + propValue, property.Value, isList, options);
+                            BuildParams(stringValues, property.Type, key + "." + propValue, property.Value, isList, options);
                         }
                     }
                     else
@@ -228,7 +244,7 @@ namespace ObjectToQuery.Internal
                         foreach (var property in value.GetCachedProperties())
                         {
                             string propValue = ChangeCase(property.Key, options.KeyCase);
-                            BuildParams(stringValues, key + "." + propValue, property.Value, false, options);
+                            BuildParams(stringValues, property.Type, key + "." + propValue, property.Value, false, options);
                         }
                     }
 

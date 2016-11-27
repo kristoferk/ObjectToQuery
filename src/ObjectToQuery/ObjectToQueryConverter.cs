@@ -16,6 +16,11 @@ namespace ObjectToQuery
         string ToQuery<T>(T obj, ToQueryOptions options = null) where T : class;
 
         /// <summary>
+        /// Convert object to querystirng
+        /// </summary>
+        string ToCacheKey<T>(T obj, CacheKeyOptions options = null) where T : class;
+
+        /// <summary>
         /// Optional warmup of types for better performance
         /// </summary>
         Task WarmUpAsync(params Type[] types);
@@ -37,6 +42,11 @@ namespace ObjectToQuery
         public string ToQuery<T>(T obj, ToQueryOptions options = null) where T : class
         {
             return obj.ToQuery(options);
+        }
+
+        public string ToCacheKey<T>(T obj, CacheKeyOptions options = null) where T : class
+        {
+            return obj.ToCacheKey(options);
         }
 
         /// <summary>

@@ -15,6 +15,62 @@ namespace UnitTests.TestData
         public NestedObject NestedObject { get; set; } = new NestedObject();
     }
 
+    public class CacheTest
+    {
+        public int? Age { get; set; } = 0;
+
+        public string Name { get; set; } = string.Empty;
+
+        public List<string> Tags { get; set; } = new List<string>();
+
+        public List<int> Ids { get; set; } = new List<int>();
+    }
+
+    public class CacheTestInt
+    {
+        public int? Age { get; set; } = 0;
+    }
+
+    public class CacheTestString
+    {
+        public string Name { get; set; } = string.Empty;
+    }
+
+    public class CacheTestNullableIntList
+    {
+        public List<int?> Ids { get; set; } = new List<int?>();
+    }
+
+    public class CacheTestIntList
+    {
+        public List<int> Ids { get; set; } = new List<int>();
+    }
+
+    public class CacheTestNestedIntList
+    {
+        public CacheTestIntList Obj { get; set; } = new CacheTestIntList();
+    }
+
+    public class CacheTestNestedStringList
+    {
+        public CacheTestStringList Obj { get; set; } = new CacheTestStringList();
+    }
+
+    public class CacheTestListNestedStringList
+    {
+        public List<CacheTestStringList> List { get; set; } = new List<CacheTestStringList>();
+    }
+
+    public class CacheTestListOfList
+    {
+        public List<List<string>> List { get; set; } = new List<List<string>>();
+    }
+
+    public class CacheTestStringList
+    {
+        public List<string> Tags { get; set; } = new List<string>();
+    }
+
     public class InheritTest : MyObject
     {
         public int Page { get; set; } = 1;
@@ -25,6 +81,16 @@ namespace UnitTests.TestData
     public class NestedObject
     {
         public int Id { get; set; } = 2;
+    }
+
+    public class TestNestedObject
+    {
+        public NestedObject NestedObject { get; set; } = new NestedObject();
+    }
+
+    public class TestNestedNestedObject
+    {
+        public TestNestedObject NestedObject { get; set; } = new TestNestedObject();
     }
 
     public class ListObject

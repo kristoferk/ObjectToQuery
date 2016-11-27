@@ -28,7 +28,12 @@ namespace ObjectToQuery
         /// </summary>
         public static string ToQuery<T>(this T filter, ToQueryOptions options = null) where T : class
         {
-            return filter.ConvertToQuery(options);
+            return filter.ConvertToQuery(options ?? new ToQueryOptions());
+        }
+
+        public static string ToCacheKey<T>(this T filter, CacheKeyOptions options = null) where T : class
+        {
+            return filter.ConvertToQuery(options ?? new CacheKeyOptions());
         }
 
         /// <summary>

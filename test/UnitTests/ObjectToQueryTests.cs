@@ -35,6 +35,163 @@ namespace UnitTests
         }
 
         [Fact]
+        public void TestCache()
+        {
+            CacheTest notNull = new CacheTest {
+                Age = 0,
+                Name = string.Empty,
+                Tags = new List<string>(),
+                Ids = new List<int>()
+            };
+
+            string expectedQuery = "Age=0&Name=";
+            Assert.Equal(expectedQuery, notNull.ToCacheKey());
+
+            CacheTest nullable = new CacheTest {
+                Age = null,
+                Name = null,
+                Tags = null,
+                Ids = null
+            };
+
+            string expectedQuery2 = "Tags=Null&Ids=Null";
+            Assert.Equal(expectedQuery2, nullable.ToCacheKey());
+
+            CacheTest defaultTest = new CacheTest {
+                Age = 0,
+                Name = string.Empty,
+                Tags = new List<string> { string.Empty },
+                Ids = new List<int> { 0 }
+            };
+
+            string expectedQuery3 = "Age=0&Name=&Tags=&Ids=0";
+            Assert.Equal(expectedQuery3, defaultTest.ToCacheKey());
+
+            Assert.NotEqual(nullable.ToCacheKey(), defaultTest.ToCacheKey());
+            Assert.NotEqual(notNull.ToCacheKey(), defaultTest.ToCacheKey());
+            Assert.NotEqual(notNull.ToCacheKey(), nullable.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheInt()
+        {
+            CacheTestInt notNull = new CacheTestInt { Age = 0 };
+            Assert.Equal("Age=0", notNull.ToCacheKey());
+            CacheTestInt objNull = new CacheTestInt { Age = null };
+            Assert.Equal(string.Empty, objNull.ToCacheKey());
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheIntList()
+        {
+            CacheTestIntList objNull = new CacheTestIntList { Ids = null };
+            Assert.Equal("Ids=Null", objNull.ToCacheKey());
+            CacheTestIntList notNull = new CacheTestIntList { Ids = new List<int> { 0 } };
+            Assert.Equal("Ids=0", notNull.ToCacheKey());
+            CacheTestIntList emptyList = new CacheTestIntList { Ids = new List<int>() };
+            Assert.Equal(string.Empty, emptyList.ToCacheKey());
+
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), notNull.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheNestedStringList()
+        {
+            CacheTestNestedStringList objNull = new CacheTestNestedStringList { Obj = new CacheTestStringList { Tags = null } };
+            Assert.Equal("Obj.Tags=Null", objNull.ToCacheKey());
+            CacheTestNestedStringList notNull = new CacheTestNestedStringList { Obj = new CacheTestStringList { Tags = new List<string> { string.Empty } } };
+            Assert.Equal("Obj.Tags=", notNull.ToCacheKey());
+            CacheTestNestedStringList emptyList = new CacheTestNestedStringList { Obj = new CacheTestStringList { Tags = new List<string>() } };
+            Assert.Equal(string.Empty, emptyList.ToCacheKey());
+
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), notNull.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheNullableIntList()
+        {
+            CacheTestNullableIntList objNull = new CacheTestNullableIntList { Ids = null };
+            Assert.Equal("Ids=Null", objNull.ToCacheKey());
+            CacheTestNullableIntList notNull = new CacheTestNullableIntList { Ids = new List<int?> { 0 } };
+            Assert.Equal("Ids=0", notNull.ToCacheKey());
+            CacheTestNullableIntList emptyList = new CacheTestNullableIntList { Ids = new List<int?>() };
+            Assert.Equal(string.Empty, emptyList.ToCacheKey());
+            CacheTestNullableIntList nullList = new CacheTestNullableIntList { Ids = new List<int?> { null } };
+            Assert.Equal(string.Empty, nullList.ToCacheKey());
+
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), notNull.ToCacheKey());
+            Assert.Equal(emptyList.ToCacheKey(), nullList.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheString()
+        {
+            CacheTestString notNull = new CacheTestString { Name = string.Empty };
+            Assert.Equal("Name=", notNull.ToCacheKey());
+            CacheTestString objNull = new CacheTestString { Name = null };
+            Assert.Equal(string.Empty, objNull.ToCacheKey());
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheStringList()
+        {
+            CacheTestStringList objNull = new CacheTestStringList { Tags = null };
+            Assert.Equal("Tags=Null", objNull.ToCacheKey());
+            CacheTestStringList notNull = new CacheTestStringList { Tags = new List<string> { string.Empty } };
+            Assert.Equal("Tags=", notNull.ToCacheKey());
+            CacheTestStringList emptyList = new CacheTestStringList { Tags = new List<string>() };
+            Assert.Equal(string.Empty, emptyList.ToCacheKey());
+
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), notNull.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheTestListNestedStringList()
+        {
+            CacheTestListNestedStringList objNull = new CacheTestListNestedStringList { List = new List<CacheTestStringList> { new CacheTestStringList { Tags = null } } };
+            Assert.Equal("List.Tags=Null", objNull.ToCacheKey());
+            CacheTestListNestedStringList notNull = new CacheTestListNestedStringList { List = new List<CacheTestStringList> { new CacheTestStringList { Tags = new List<string> { string.Empty } } } };
+            Assert.Equal("List.Tags=", notNull.ToCacheKey());
+            CacheTestListNestedStringList emptyList = new CacheTestListNestedStringList { List = new List<CacheTestStringList> { new CacheTestStringList { Tags = new List<string>() } } };
+            Assert.Equal(string.Empty, emptyList.ToCacheKey());
+            CacheTestListNestedStringList listOfNullList = new CacheTestListNestedStringList { List = new List<CacheTestStringList> { new CacheTestStringList { Tags = new List<string> { null } } } };
+            Assert.Equal(string.Empty, listOfNullList.ToCacheKey());
+
+            Assert.NotEqual(notNull.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), objNull.ToCacheKey());
+            Assert.NotEqual(emptyList.ToCacheKey(), notNull.ToCacheKey());
+            Assert.Equal(emptyList.ToCacheKey(), listOfNullList.ToCacheKey());
+        }
+
+        [Fact]
+        public void TestCacheTestListOfList()
+        {
+            CacheTestListOfList objNull = new CacheTestListOfList { List = new List<List<string>> { null } };
+            Assert.Equal("List=Null", objNull.ToCacheKey());
+            CacheTestListOfList notNull = new CacheTestListOfList { List = new List<List<string>> { new List<string>() } };
+            Assert.Equal(string.Empty, notNull.ToCacheKey());
+
+            CacheTestListOfList notNull2 = new CacheTestListOfList { List = new List<List<string>> { new List<string> { string.Empty } } };
+            Assert.Equal("List=", notNull2.ToCacheKey());
+
+            CacheTestListOfList notNull3 = new CacheTestListOfList { List = new List<List<string>> { new List<string> { null } } };
+            Assert.Equal(string.Empty, notNull3.ToCacheKey());
+
+            CacheTestListOfList notNull4 = new CacheTestListOfList { List = new List<List<string>> { new List<string> { "A" } } };
+            Assert.Equal("List=A", notNull4.ToCacheKey());
+        }
+
+        [Fact]
         public void TestConverter()
         {
             var testData = TestDataFactory.CreateTestObject();
@@ -287,6 +444,154 @@ namespace UnitTests
             var query = new ListObject().ToQuery();
             string expectedQuery = "List=2&List=4";
             Assert.Equal(expectedQuery, query);
+        }
+
+        [Fact]
+        public void TestNestedNestedObject()
+        {
+            var query = new TestNestedNestedObject {
+                NestedObject = new TestNestedObject {
+                    NestedObject = null
+                }
+            }.ToQuery();
+
+            string expectedQuery = string.Empty;
+            Assert.Equal(expectedQuery, query);
+
+            var query2 = new TestNestedNestedObject {
+                NestedObject = new TestNestedObject {
+                    NestedObject = new NestedObject {
+                        Id = 0
+                    }
+                }
+            }.ToQuery();
+
+            string expectedQuery2 = "NestedObject.NestedObject.Id=0";
+            Assert.Equal(expectedQuery2, query2);
+        }
+
+        [Fact]
+        public void TestNestedObject()
+        {
+            var query = new TestNestedObject {
+                NestedObject = null
+            }.ToQuery();
+            string expectedQuery = string.Empty;
+            Assert.Equal(expectedQuery, query);
+
+            var query2 = new TestNestedObject {
+                NestedObject = new NestedObject {
+                    Id = 0
+                }
+            }.ToQuery();
+            string expectedQuery2 = "NestedObject.Id=0";
+            Assert.Equal(expectedQuery2, query2);
+        }
+
+        [Fact]
+        public void TestQueryInsteadOfCache()
+        {
+            CacheTest notNull = new CacheTest {
+                Age = 0,
+                Name = string.Empty,
+                Tags = new List<string>(),
+                Ids = new List<int>()
+            };
+
+            string expectedQuery = "Age=0&Name=";
+            Assert.Equal(expectedQuery, notNull.ToQuery());
+
+            CacheTest nullable = new CacheTest {
+                Age = null,
+                Name = null,
+                Tags = null,
+                Ids = null
+            };
+
+            string expectedQuery2 = string.Empty;
+            Assert.Equal(expectedQuery2, nullable.ToQuery());
+
+            CacheTest defaultTest = new CacheTest {
+                Age = 0,
+                Name = string.Empty,
+                Tags = new List<string> { string.Empty },
+                Ids = new List<int> { 0 }
+            };
+
+            string expectedQuery3 = "Age=0&Name=&Tags=&Ids=0";
+            Assert.Equal(expectedQuery3, defaultTest.ToQuery());
+
+            Assert.NotEqual(nullable.ToQuery(), defaultTest.ToQuery());
+            Assert.NotEqual(notNull.ToQuery(), defaultTest.ToQuery());
+            Assert.NotEqual(notNull.ToQuery(), nullable.ToQuery());
+        }
+
+        [Fact]
+        public void TestQueryInsteadOfCacheInt()
+        {
+            CacheTestInt notNull = new CacheTestInt { Age = 0 };
+            Assert.Equal("Age=0", notNull.ToQuery());
+            CacheTestInt objNull = new CacheTestInt { Age = null };
+            Assert.Equal(string.Empty, objNull.ToQuery());
+            Assert.NotEqual(notNull.ToQuery(), objNull.ToQuery());
+        }
+
+        [Fact]
+        public void TestQueryInsteadOfCacheIntList()
+        {
+            CacheTestIntList objNull = new CacheTestIntList { Ids = null };
+            Assert.Equal(string.Empty, objNull.ToQuery());
+            CacheTestIntList notNull = new CacheTestIntList { Ids = new List<int> { 0 } };
+            Assert.Equal("Ids=0", notNull.ToQuery());
+            CacheTestIntList emptyList = new CacheTestIntList { Ids = new List<int>() };
+            Assert.Equal(string.Empty, emptyList.ToQuery());
+
+            Assert.NotEqual(notNull.ToQuery(), objNull.ToQuery());
+            Assert.Equal(emptyList.ToQuery(), objNull.ToQuery());
+            Assert.NotEqual(emptyList.ToQuery(), notNull.ToQuery());
+        }
+
+        [Fact]
+        public void TestQueryInsteadOfCacheString()
+        {
+            CacheTestString notNull = new CacheTestString { Name = string.Empty };
+            Assert.Equal("Name=", notNull.ToQuery());
+            CacheTestString objNull = new CacheTestString { Name = null };
+            Assert.Equal(string.Empty, objNull.ToQuery());
+            Assert.NotEqual(notNull.ToQuery(), objNull.ToQuery());
+        }
+
+        [Fact]
+        public void TestQueryInsteadOfCacheStringList()
+        {
+            CacheTestStringList objNull = new CacheTestStringList { Tags = null };
+            Assert.Equal(string.Empty, objNull.ToQuery());
+            CacheTestStringList notNull = new CacheTestStringList { Tags = new List<string> { string.Empty } };
+            Assert.Equal("Tags=", notNull.ToQuery());
+            CacheTestStringList emptyList = new CacheTestStringList { Tags = new List<string>() };
+            Assert.Equal(string.Empty, emptyList.ToQuery());
+
+            Assert.NotEqual(notNull.ToQuery(), objNull.ToQuery());
+            Assert.Equal(emptyList.ToQuery(), objNull.ToQuery());
+            Assert.NotEqual(emptyList.ToQuery(), notNull.ToQuery());
+        }
+
+        [Fact]
+        public void TestQueryTestListOfList()
+        {
+            CacheTestListOfList objNull = new CacheTestListOfList { List = new List<List<string>> { null } };
+            Assert.Equal(string.Empty, objNull.ToQuery());
+            CacheTestListOfList notNull = new CacheTestListOfList { List = new List<List<string>> { new List<string>() } };
+            Assert.Equal(string.Empty, notNull.ToQuery());
+
+            CacheTestListOfList notNull2 = new CacheTestListOfList { List = new List<List<string>> { new List<string> { string.Empty } } };
+            Assert.Equal("List=", notNull2.ToQuery());
+
+            CacheTestListOfList notNull3 = new CacheTestListOfList { List = new List<List<string>> { new List<string> { null } } };
+            Assert.Equal(string.Empty, notNull3.ToQuery());
+
+            CacheTestListOfList notNull4 = new CacheTestListOfList { List = new List<List<string>> { new List<string> { "A" } } };
+            Assert.Equal("List=A", notNull4.ToQuery());
         }
 
         [Fact]

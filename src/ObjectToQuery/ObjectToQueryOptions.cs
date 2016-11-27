@@ -2,7 +2,23 @@
 
 namespace ObjectToQuery
 {
-    public class ToQueryOptions
+    public class ToQueryOptions : BaseOptions
+    {
+        public ToQueryOptions()
+        {
+            ToCacheKey = false;
+        }
+    }
+
+    public class CacheKeyOptions : BaseOptions
+    {
+        public CacheKeyOptions()
+        {
+            ToCacheKey = true;
+        }
+    }
+
+    public class BaseOptions
     {
         public RemoveValues RemoveValues { get; set; } = RemoveValues.Null;
 
@@ -18,9 +34,11 @@ namespace ObjectToQuery
 
         public bool ReplaceSpaceWithPlus { get; set; }
 
-        //public ToQueryEvents Events { get; set; }
+        internal bool ToCacheKey { get; set; }
 
         //public KeyListStyle KeyListStyle { get; set; }
+
+        //public ToQueryEvents Events { get; set; }
     }
 
     public class ToQueryEvents
