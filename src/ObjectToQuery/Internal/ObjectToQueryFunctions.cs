@@ -9,10 +9,6 @@ namespace ObjectToQuery.Internal
 {
     internal static class ObjectToQueryFunctions
     {
-        public const string QueryDelimiter = "?";
-        public const string ParameterKeyValueDelimiter = "=";
-        public const string ParameterDelimiter = "&";
-
         internal static string ConvertToQuery<T>(this T filter, ToQueryOptions options) where T : class
         {
             if (filter == null)
@@ -39,7 +35,7 @@ namespace ObjectToQuery.Internal
                 }
             }
 
-            string result = string.Join(ParameterDelimiter, stringValues);
+            string result = string.Join("&", stringValues);
             if (options.ReplaceSpaceWithPlus)
             {
                 result = result.Replace("%20", "+");
@@ -207,15 +203,6 @@ namespace ObjectToQuery.Internal
                     foreach (var listOject in enumerable)
                     {
                         BuildParams(stringValues, key, listOject, true, options);
-                    }
-                }
-                else
-                {
-                    if (!(value is IEnumerable<string>)
-                        && options.RemoveValues != RemoveValues.NullOrEmpty
-                        && options.RemoveValues != RemoveValues.NullDefaultOrEmpty)
-                    {
-                        Add(stringValues, key, string.Empty, options);
                     }
                 }
 

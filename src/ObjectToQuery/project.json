@@ -1,5 +1,5 @@
 ﻿{
-  "version": "0.9.3",
+  "version": "0.9.4",
   "title": "ObjectToQuery",
   "description": "A C# library for converting objects to url querystrings",
   "authors": [ "kristoferk" ],

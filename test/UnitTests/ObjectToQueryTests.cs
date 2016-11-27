@@ -285,7 +285,7 @@ namespace UnitTests
         public void TestListObject()
         {
             var query = new ListObject().ToQuery();
-            string expectedQuery = "List=2&List=4&EmptyIntList=";
+            string expectedQuery = "List=2&List=4";
             Assert.Equal(expectedQuery, query);
         }
 
