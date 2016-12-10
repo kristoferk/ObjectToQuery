@@ -349,6 +349,27 @@ namespace UnitTests
         }
 
         [Fact]
+        public void TestDynamic()
+        {
+            IObjectToQueryConverter objectToQueryConverter = new ObjectToQueryConverter();
+
+            string queryString = objectToQueryConverter.ToQuery(new { Id = 1, Name = "Example" });
+            string expectedQuery = "Id=1&Name=Example";
+            Assert.Equal(expectedQuery, queryString);
+
+            queryString = objectToQueryConverter.ToQuery(new { Id = 1, Name = "Example" });
+            Assert.Equal(expectedQuery, queryString);
+
+            string queryString2 = objectToQueryConverter.ToQuery(new { Id2 = 1, Name2 = "Example" });
+            string expectedQuery2 = "Id2=1&Name2=Example";
+            Assert.Equal(expectedQuery2, queryString2);
+
+            string queryString3 = objectToQueryConverter.ToQuery(new { Id = 3, Name = "Example3" });
+            string expectedQuery3 = "Id=3&Name=Example3";
+            Assert.Equal(expectedQuery3, queryString3);
+        }
+
+        [Fact]
         public void TestInheritTest()
         {
             var query = new InheritTest().ToQuery(new ToQueryOptions());
