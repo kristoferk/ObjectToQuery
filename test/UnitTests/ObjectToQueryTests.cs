@@ -83,6 +83,36 @@ namespace UnitTests
         }
 
         [Fact]
+        public void TestCacheDate()
+        {
+            var date = DateTime.UtcNow;
+            var offset = DateTimeOffset.UtcNow;
+
+            CacheTestDate obj = new CacheTestDate {
+                Date1 = date,
+                Date2 = date,
+                Date3 = offset,
+                Date4 = offset
+            };
+
+            var result =
+                $"Date1={date:yyyy-MM-dd}T{date:HH}%3A{date:mm}%3A00.0000000Z&" +
+                $"Date2={date:yyyy-MM-dd}T{date:HH}%3A{date:mm}%3A00.0000000Z&" +
+                $"Date3={offset:yyyy-MM-dd}T{offset:HH}%3A{offset:mm}%3A00.0000000%2B00%3A00&" +
+                $"Date4={offset:yyyy-MM-dd}T{offset:HH}%3A{offset:mm}%3A00.0000000%2B00%3A00";
+
+            Assert.Equal(result, obj.ToCacheKey());
+
+            obj.Date1 = new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, 0, DateTimeKind.Utc);
+            obj.Date2 = new DateTime(obj.Date2.Year, obj.Date2.Month, obj.Date2.Day, obj.Date2.Hour, obj.Date2.Minute, 0, DateTimeKind.Utc);
+
+            obj.Date3 = new DateTimeOffset(offset.Year, offset.Month, offset.Day, offset.Hour, offset.Minute, 0, TimeSpan.Zero);
+            obj.Date4 = new DateTimeOffset(obj.Date4.Year, obj.Date4.Month, obj.Date2.Day, obj.Date4.Hour, obj.Date4.Minute, 0, TimeSpan.Zero);
+
+            Assert.Equal(result, obj.ToQuery());
+        }
+
+        [Fact]
         public void TestCacheIntList()
         {
             CacheTestIntList objNull = new CacheTestIntList { Ids = null };

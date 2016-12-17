@@ -31,6 +31,17 @@ namespace UnitTests.TestData
         public int? Age { get; set; } = 0;
     }
 
+    public class CacheTestDate
+    {
+        public DateTime? Date1 { get; set; }
+
+        public DateTime Date2 { get; set; }
+
+        public DateTimeOffset? Date3 { get; set; }
+
+        public DateTimeOffset Date4 { get; set; }
+    }
+
     public class CacheTestString
     {
         public string Name { get; set; } = string.Empty;

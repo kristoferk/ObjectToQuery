@@ -119,14 +119,16 @@ namespace ObjectToQuery.Internal
             var valueAsDateTime = value as DateTime?;
             if (valueAsDateTime.HasValue)
             {
-                Add(stringValues, key, valueAsDateTime.Value.ToString("O"), options);
+                var dateFormat = options.ToCacheKey ? "yyyy-MM-ddTHH:mm:00.0000000Z" : "O";
+                Add(stringValues, key, valueAsDateTime.Value.ToString(dateFormat), options);
                 return true;
             }
 
             var valueAsDateTimeOffset = value as DateTimeOffset?;
             if (valueAsDateTimeOffset.HasValue)
             {
-                Add(stringValues, key, valueAsDateTimeOffset.Value.ToString("O"), options);
+                var dateFormat = options.ToCacheKey ? "yyyy-MM-ddTHH:mm:00.0000000zzz" : "O";
+                Add(stringValues, key, valueAsDateTimeOffset.Value.ToString(dateFormat), options);
                 return true;
             }
 
